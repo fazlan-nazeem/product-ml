@@ -122,6 +122,17 @@ public class Dataset1DiabetesTestCase extends MLBaseTest {
     }
 
     /**
+     * A test case for exporting a model n pmml format
+     *
+     * @throws MLHttpClientException
+     * @throws JSONException
+     */
+    private void testExportAsPMML() throws MLHttpClientException {
+        response = mlHttpclient.exportAsPMML(modelName);
+        assertEquals("Unexpected response received",Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),response.getStatusLine().getStatusCode());
+
+    }
+    /**
      * A test case for building a model with the given learning algorithm
      * 
      * @param algorithmName Name of the learning algorithm
@@ -183,6 +194,7 @@ public class Dataset1DiabetesTestCase extends MLBaseTest {
 
         // Predict for dataset with incompatible numerical feature
         testPredictDiabetesInvalidNumericalFeatures();
+        testExportAsPMML();
     }
 
     /**
@@ -233,6 +245,7 @@ public class Dataset1DiabetesTestCase extends MLBaseTest {
         // Predict using built Linear Regression model
         testPredictDiabetes();
         testPredictDiabetesFromFile();
+        testExportAsPMML();
     }
 
     /**
@@ -246,7 +259,9 @@ public class Dataset1DiabetesTestCase extends MLBaseTest {
     @Test(description = "Build a K-means model", groups = "createKMeansDiabetes", dependsOnGroups = "createLogisticRegressionDiabetes")
     public void testBuildKMeansModel() throws MLHttpClientException, IOException, JSONException, InterruptedException {
         buildModelWithLearningAlgorithm("K_MEANS", MLIntegrationTestConstants.CLUSTERING);
+        testExportAsPMML();
     }
+
 
     @AfterClass(alwaysRun = true)
     public void tearDown() throws InterruptedException, MLHttpClientException {
