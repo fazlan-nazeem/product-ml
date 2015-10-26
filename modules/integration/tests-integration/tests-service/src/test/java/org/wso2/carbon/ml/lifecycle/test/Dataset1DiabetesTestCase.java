@@ -121,17 +121,7 @@ public class Dataset1DiabetesTestCase extends MLBaseTest {
         assertEquals(7, predictions.length());
     }
 
-    /**
-     * A test case for exporting a model n pmml format
-     *
-     * @throws MLHttpClientException
-     * @throws JSONException
-     */
-    private void testExportAsPMML() throws MLHttpClientException {
-        response = mlHttpclient.exportAsPMML(modelName);
-        assertEquals("Unexpected response received",Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),response.getStatusLine().getStatusCode());
 
-    }
     /**
      * A test case for building a model with the given learning algorithm
      * 
@@ -262,6 +252,17 @@ public class Dataset1DiabetesTestCase extends MLBaseTest {
         testExportAsPMML();
     }
 
+    /**
+     * A test case for exporting a model in pmml format
+     *
+     * @throws MLHttpClientException
+     */
+    private void testExportAsPMML() throws MLHttpClientException {
+        response = mlHttpclient.exportAsPMML(modelName);
+        assertEquals("Pmml download has failed. Unexpected response received", Response.Status.OK.getStatusCode(),
+                response.getStatusLine().getStatusCode());
+
+    }
 
     @AfterClass(alwaysRun = true)
     public void tearDown() throws InterruptedException, MLHttpClientException {

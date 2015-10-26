@@ -143,6 +143,7 @@ public class Dataset5GammaTelescopeTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("SVM", MLIntegrationTestConstants.CLASSIFICATION);
         // Predict using built Linear Regression model
         testPredictGammaTelescope();
+        testExportAsPMML();
     }
 
     /**
@@ -176,6 +177,7 @@ public class Dataset5GammaTelescopeTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("LOGISTIC_REGRESSION", MLIntegrationTestConstants.CLASSIFICATION);
         // Predict using built Linear Regression model
         testPredictGammaTelescope();
+        testExportAsPMML();
     }
 
     /**
@@ -189,8 +191,19 @@ public class Dataset5GammaTelescopeTestCase extends MLBaseTest {
     @Test(description = "Build a K-means model", groups = "createKMeansGammaTelescope", dependsOnGroups = "createLogisticRegressionGammaTelescope")
     public void testBuildKMeansModel() throws MLHttpClientException, IOException, JSONException, InterruptedException {
         buildModelWithLearningAlgorithm("K_MEANS", MLIntegrationTestConstants.CLUSTERING);
+        testExportAsPMML();
     }
+    /**
+     * A test case for exporting a model in pmml format
+     *
+     * @throws MLHttpClientException
+     */
+    private void testExportAsPMML() throws MLHttpClientException {
+        response = mlHttpclient.exportAsPMML(modelName);
+        assertEquals("Pmml download has failed. Unexpected response received", Response.Status.OK.getStatusCode(),
+                response.getStatusLine().getStatusCode());
 
+    }
     @AfterClass(alwaysRun = true)
     public void tearDown() throws InterruptedException, MLHttpClientException {
         super.destroy();

@@ -120,6 +120,7 @@ public class Dataset2YachtHydrodynamicsTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("LINEAR_REGRESSION", MLIntegrationTestConstants.NUMERICAL_PREDICTION);
         // Predict using built Linear Regression model
         testPredictYacht();
+        testExportAsPMML();
     }
 
     /**
@@ -137,6 +138,7 @@ public class Dataset2YachtHydrodynamicsTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("RIDGE_REGRESSION", MLIntegrationTestConstants.NUMERICAL_PREDICTION);
         // Predict using built Ridge Regression model
         testPredictYacht();
+        testExportAsPMML();
     }
 
     /**
@@ -154,8 +156,20 @@ public class Dataset2YachtHydrodynamicsTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("LASSO_REGRESSION", MLIntegrationTestConstants.NUMERICAL_PREDICTION);
         // Predict using built Lasso Regression model
         testPredictYacht();
+        testExportAsPMML();
     }
 
+    /**
+     * A test case for exporting a model in pmml format
+     *
+     * @throws MLHttpClientException
+     */
+    private void testExportAsPMML() throws MLHttpClientException {
+        response = mlHttpclient.exportAsPMML(modelName);
+        assertEquals("Pmml download has failed. Unexpected response received", Response.Status.OK.getStatusCode(),
+                response.getStatusLine().getStatusCode());
+
+    }
     @AfterClass(alwaysRun = true)
     public void tearDown() throws InterruptedException, MLHttpClientException {
         super.destroy();

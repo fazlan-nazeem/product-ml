@@ -121,6 +121,7 @@ public class Dataset4ForestFiresTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("LINEAR_REGRESSION", MLIntegrationTestConstants.NUMERICAL_PREDICTION);
         // Predict using built Linear Regression model
         testPredictForestFires();
+        testExportAsPMML();
     }
 
     /**
@@ -138,6 +139,7 @@ public class Dataset4ForestFiresTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("RIDGE_REGRESSION", MLIntegrationTestConstants.NUMERICAL_PREDICTION);
         // Predict using built Ridge Regression model
         testPredictForestFires();
+        testExportAsPMML();
     }
 
     /**
@@ -155,6 +157,7 @@ public class Dataset4ForestFiresTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("LASSO_REGRESSION", MLIntegrationTestConstants.NUMERICAL_PREDICTION);
         // Predict using built Lasso Regression model
         testPredictForestFires();
+        testExportAsPMML();
     }
 
     /**
@@ -168,8 +171,19 @@ public class Dataset4ForestFiresTestCase extends MLBaseTest {
     @Test(description = "Build a K-means model", groups = "createKMeansForestFires", dependsOnGroups = "createLassoRegressionModelForestFires")
     public void testBuildKMeansModel() throws MLHttpClientException, IOException, JSONException, InterruptedException {
         buildModelWithLearningAlgorithm("K_MEANS", MLIntegrationTestConstants.CLUSTERING);
+        testExportAsPMML();
     }
+    /**
+     * A test case for exporting a model in pmml format
+     *
+     * @throws MLHttpClientException
+     */
+    private void testExportAsPMML() throws MLHttpClientException {
+        response = mlHttpclient.exportAsPMML(modelName);
+        assertEquals("Pmml download has failed. Unexpected response received", Response.Status.OK.getStatusCode(),
+                response.getStatusLine().getStatusCode());
 
+    }
     @AfterClass(alwaysRun = true)
     public void tearDown() throws InterruptedException, MLHttpClientException {
         super.destroy();

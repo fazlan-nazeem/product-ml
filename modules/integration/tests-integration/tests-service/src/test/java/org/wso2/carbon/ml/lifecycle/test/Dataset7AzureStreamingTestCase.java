@@ -100,6 +100,19 @@ public class Dataset7AzureStreamingTestCase extends MLBaseTest {
     @Test(description = "Build a K-means model", groups = "createKMeansAzureStreaming")
     public void testBuildKMeansModel() throws MLHttpClientException, IOException, JSONException, InterruptedException {
         buildModelWithLearningAlgorithm("K_MEANS", MLIntegrationTestConstants.CLUSTERING);
+        testExportAsPMML();
+    }
+
+    /**
+     * A test case for exporting a model in pmml format
+     *
+     * @throws MLHttpClientException
+     */
+    private void testExportAsPMML() throws MLHttpClientException {
+        response = mlHttpclient.exportAsPMML(modelName);
+        assertEquals("Pmml download has failed. Unexpected response received", Response.Status.OK.getStatusCode(),
+                response.getStatusLine().getStatusCode());
+
     }
 
     @AfterClass(alwaysRun = true)

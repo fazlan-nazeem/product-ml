@@ -111,6 +111,7 @@ public class Dataset8DASDataTestCase extends MLBaseTest {
         buildModelWithLearningAlgorithm("LINEAR_REGRESSION", MLIntegrationTestConstants.NUMERICAL_PREDICTION);
         // Predict using built Linear Regression model
         testPredictDAS();
+        testExportAsPMML();
     }
 
     /**
@@ -122,11 +123,23 @@ public class Dataset8DASDataTestCase extends MLBaseTest {
     private void testPredictDAS() throws MLHttpClientException, JSONException {
         String payload = "[[21,3,2],[211,1,7]]";
         response = mlHttpclient.doHttpPost("/api/models/" + modelId + "/predict", payload);
-        assertEquals("Unexpected response received", Response.Status.OK.getStatusCode(), response.getStatusLine()
-                .getStatusCode());
+        assertEquals("Unexpected response received", Response.Status.OK.getStatusCode(),
+                response.getStatusLine().getStatusCode());
         String reply = mlHttpclient.getResponseAsString(response);
         JSONArray predictions = new JSONArray(reply);
         assertEquals(2, predictions.length());
+    }
+
+    /**
+     * A test case for exporting a model in pmml format
+     *
+     * @throws MLHttpClientException
+     */
+    private void testExportAsPMML() throws MLHttpClientException {
+        response = mlHttpclient.exportAsPMML(modelName);
+        assertEquals("Pmml download has failed. Unexpected response received", Response.Status.OK.getStatusCode(),
+                response.getStatusLine().getStatusCode());
+
     }
 
     @AfterClass(alwaysRun = true)
